@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AgriGuard AI - Rice Disease Detection</title>
+    <title>AgriGuard AI - Demo Portfolio</title>
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -11,154 +11,272 @@
     <!-- Ionicons -->
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-    <link rel="stylesheet" href="style.css">
+    
+    <style>
+        /* CSS System (Integrated from style.css) */
+        :root {
+            --primary: #064E3B;
+            --primary-light: #10B981;
+            --accent: #FDE047;
+            --bg-dark: #022C22;
+            --bg-light: #F8FAFC;
+            --text-dark: #1E293B;
+            --text-white: #FFFFFF;
+            --glass: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            --radius: 16px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        h1, h2, h3, .logo-text, .cta-btn { font-family: 'Outfit', sans-serif; }
+        body { background-color: var(--bg-light); color: var(--text-dark); line-height: 1.6; overflow-x: hidden; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+        /* Loader */
+        .loader-wrapper { position: fixed; inset: 0; background: var(--bg-dark); display: flex; justify-content: center; align-items: center; z-index: 9999; transition: opacity 0.5s ease; }
+        .leaf-loader { animation: pulse 1.5s infinite; }
+        .loader-icon { font-size: 4rem; color: var(--primary-light); }
+        @keyframes pulse { 0% { transform: scale(1); opacity: 0.5; } 50% { transform: scale(1.2); opacity: 1; } 100% { transform: scale(1); opacity: 0.5; } }
+
+        /* Header */
+        header { position: fixed; top: 0; width: 100%; padding: 20px 40px; display: flex; justify-content: space-between; align-items: center; z-index: 1000; background: rgba(2, 44, 34, 0.8); backdrop-filter: blur(10px); border-bottom: 1px solid var(--glass-border); }
+        .logo { display: flex; align-items: center; gap: 12px; color: var(--text-white); font-weight: 700; font-size: 1.5rem; }
+        .logo-icon { font-size: 2rem; color: var(--primary-light); }
+        .accent { color: var(--primary-light); }
+        nav { display: flex; align-items: center; gap: 30px; }
+        .lang-switcher { display: flex; align-items: center; gap: 8px; color: var(--text-white); background: var(--glass); padding: 8px 16px; border-radius: 30px; font-size: 0.85rem; cursor: pointer; }
+        .lang-item.active { font-weight: 700; color: var(--primary-light); }
+        .settings-btn { background: var(--glass); border: none; color: var(--text-white); width: 40px; height: 40px; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; transition: var(--transition); }
+        .settings-btn:hover { background: var(--primary-light); transform: rotate(45deg); }
+
+        /* Portfolio Badge (Specific for Recruiter) */
+        .portfolio-badge { position: absolute; top: 120px; left: 40px; background: var(--primary-light); color: var(--bg-dark); padding: 8px 16px; border-radius: 8px; font-weight: 700; font-size: 0.8rem; z-index: 10; display: flex; align-items: center; gap: 8px; box-shadow: var(--shadow); }
+
+        /* Hero */
+        .hero { height: 80vh; min-height: 600px; background-image: url('rice_field_hero.png'); background-size: cover; background-position: center; position: relative; display: flex; align-items: center; justify-content: center; text-align: center; padding-top: 80px; }
+        .hero-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(2, 44, 34, 0.8), rgba(2, 44, 34, 0.4)); }
+        .hero-content { position: relative; z-index: 1; max-width: 800px; color: var(--text-white); padding: 0 20px; }
+        .hero-content h1 { font-size: clamp(2.5rem, 8vw, 4.5rem); line-height: 1.1; margin-bottom: 24px; font-weight: 700; }
+        .hero-content p { font-size: 1.25rem; margin-bottom: 40px; opacity: 0.9; }
+
+        /* Scanner */
+        .scanner-section { padding: 100px 0; background: var(--bg-light); }
+        .uploader-container { background: white; border: 3px dashed #E2E8F0; border-radius: var(--radius); padding: 60px 40px; text-align: center; cursor: pointer; transition: var(--transition); position: relative; overflow: hidden; }
+        .uploader-container:hover { border-color: var(--primary-light); background: #F0FDF4; }
+        .uploader-container.dragover { border-color: var(--primary-light); background: #DCFCE7; transform: scale(1.02); }
+        .icon-pulse { width: 80px; height: 80px; background: #DCFCE7; border-radius: 50%; display: flex; justify-content: center; align-items: center; margin: 0 auto 24px; color: var(--primary-light); font-size: 2.5rem; }
+        .preview-container { position: absolute; inset: 0; background: white; display: none; justify-content: center; align-items: center; }
+        .preview-container img { max-width: 100%; max-height: 100%; object-fit: contain; }
+        .remove-btn { position: absolute; top: 20px; right: 20px; background: white; border: none; color: #EF4444; font-size: 2rem; cursor: pointer; line-height: 1; border-radius: 50%; box-shadow: var(--shadow); }
+
+        /* Action Bar */
+        .action-bar { margin-top: 40px; display: flex; justify-content: center; }
+        .cta-btn { padding: 16px 40px; border-radius: 30px; border: none; font-weight: 600; font-size: 1.1rem; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 12px; transition: var(--transition); }
+        .main-cta { background: var(--primary-light); color: var(--bg-dark); }
+        .secondary-cta { background: var(--primary); color: white; }
+        .secondary-cta.disabled { opacity: 0.5; cursor: not-allowed; background: #94A3B8; }
+
+        /* Results */
+        .results-section { padding: 80px 0; background: #F1F5F9; }
+        .hidden { display: none; }
+        .result-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: -40px; padding-bottom: 80px; }
+        .badge { padding: 6px 16px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; }
+        .badge.green { background: #DCFCE7; color: #166534; }
+        .result-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
+        .result-card { background: white; padding: 30px; border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid #E2E8F0; }
+        .main-result { grid-column: 1 / -1; background: linear-gradient(135deg, white, #F0FDF4); }
+        .card-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; color: var(--primary); }
+        .card-icon { font-size: 1.5rem; }
+        .diagnosis-highlight { font-size: 2.5rem; color: var(--bg-dark); margin-bottom: 15px; }
+        .confidence-bar { margin-top: 20px; }
+        .bar-label { display: flex; justify-content: space-between; font-size: 0.9rem; font-weight: 600; margin-bottom: 8px; }
+        .bar-bg { height: 8px; background: #E2E8F0; border-radius: 10px; overflow: hidden; }
+        .bar-fill { height: 100%; background: var(--primary-light); width: 0%; transition: width 1s ease; }
+        .styled-list { list-style: none; }
+        .styled-list li { padding: 10px 0; border-bottom: 1px solid #F1F5F9; display: flex; gap: 12px; }
+        .styled-list li::before { content: "•"; color: var(--primary-light); font-weight: bold; }
+        .text-content { font-size: 1rem; color: #475569; }
+
+        /* Modal */
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(5px); display: none; justify-content: center; align-items: center; z-index: 2000; }
+        .modal { background: white; width: 90%; max-width: 500px; border-radius: var(--radius); overflow: hidden; animation: slideUp 0.3s ease; }
+        @keyframes slideUp { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .modal-header { padding: 24px; border-bottom: 1px solid #F1F5F9; display: flex; justify-content: space-between; align-items: center; }
+        .modal-body { padding: 24px; }
+        .input-group { margin-bottom: 20px; }
+        .input-group label { display: block; margin-bottom: 8px; font-weight: 600; }
+        .input-group input { width: 100%; padding: 14px; border: 2px solid #E2E8F0; border-radius: 10px; font-size: 1rem; }
+        .input-hint { font-size: 0.8rem; color: #94A3B8; margin-top: 8px; }
+        .spinner { width: 20px; height: 20px; border: 3px solid rgba(255, 255, 255, 0.3); border-radius: 50%; border-top-color: white; animation: spin 1s infinite linear; display: none; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        footer { padding: 40px; text-align: center; background: var(--bg-dark); color: rgba(255, 255, 255, 0.6); font-size: 0.9rem; }
+        @media (max-width: 768px) { header { padding: 15px 20px; } .hero-content h1 { font-size: 2.8rem; } .result-grid { grid-template-columns: 1fr; } .portfolio-badge { top: 100px; left: 20px; } }
+    </style>
 </head>
 <body>
     <div id="loader" class="loader-wrapper">
-        <div class="leaf-loader">
-            <ion-icon name="leaf" class="loader-icon"></ion-icon>
-        </div>
+        <div class="leaf-loader"><ion-icon name="leaf" class="loader-icon"></ion-icon></div>
     </div>
 
-    <!-- Header -->
     <header>
-        <div class="logo">
-            <ion-icon name="shield-checkmark-outline" class="logo-icon"></ion-icon>
-            <span class="logo-text">AgriGuard <span class="accent">AI</span></span>
-        </div>
+        <div class="logo"><ion-icon name="shield-checkmark-outline" class="logo-icon"></ion-icon><span class="logo-text">AgriGuard <span class="accent">AI</span></span></div>
         <nav>
             <div class="lang-switcher" id="lang-toggle">
                 <span class="lang-item active" data-lang="en">EN</span>
                 <span class="lang-divider">|</span>
                 <span class="lang-item" data-lang="id">ID</span>
             </div>
-            <button class="settings-btn" id="open-settings">
-                <ion-icon name="settings-outline"></ion-icon>
-            </button>
+            <button class="settings-btn" id="open-settings"><ion-icon name="settings-outline"></ion-icon></button>
         </nav>
     </header>
 
+    <div class="portfolio-badge"><ion-icon name="rocket-outline"></ion-icon>Portfolio Mode - AI Powered</div>
+
     <main>
-        <!-- Hero Section -->
         <section class="hero">
             <div class="hero-overlay"></div>
             <div class="hero-content">
                 <h1 id="hero-title" data-en="Protect Your Harvest with AI" data-id="Lindungi Panen Anda dengan AI">Protect Your Harvest with AI</h1>
-                <p id="hero-subtitle" data-en="Instant rice crop disease detection to ensure food security and maximize yield." data-id="Deteksi dini penyakit padi untuk ketahanan pangan dan hasil panen maksimal.">Instant rice crop disease detection to ensure food security and maximize yield.</p>
-                <a href="#scanner" class="cta-btn main-cta" data-en="Start Scanning" data-id="Mulai Scan">Start Scanning</a>
+                <p id="hero-subtitle" data-en="Plant disease detection using Google Gemini 1.5 Flash Vision AI." data-id="Deteksi penyakit tanaman menggunakan Google Gemini 1.5 Flash Vision AI.">Plant disease detection using Google Gemini 1.5 Flash Vision AI.</p>
+                <a href="#scanner" class="cta-btn main-cta" data-en="Launch Tool" data-id="Buka Alat">Launch Tool</a>
             </div>
         </section>
 
-        <!-- Scanner Section -->
         <section id="scanner" class="scanner-section">
             <div class="container">
                 <div class="uploader-container" id="dropzone">
                     <input type="file" id="fileInput" accept="image/*" hidden>
                     <div class="uploader-content">
-                        <div class="icon-pulse">
-                            <ion-icon name="cloud-upload-outline" class="upload-icon"></ion-icon>
-                        </div>
-                        <h3 data-en="Upload Rice Leaf Photo" data-id="Unggah Foto Daun Padi">Upload Rice Leaf Photo</h3>
-                        <p data-en="Drop your image here or click to browse" data-id="Seret gambar ke sini atau klik untuk memilih">Drop your image here or click to browse</p>
-                        <span class="file-info" data-en="Supports: JPG, PNG, WEBP" data-id="Format: JPG, PNG, WEBP">Supports: JPG, PNG, WEBP</span>
+                        <div class="icon-pulse"><ion-icon name="cloud-upload-outline" class="upload-icon"></ion-icon></div>
+                        <h3 data-en="Upload Leaf Photo" data-id="Unggah Foto Daun">Upload Leaf Photo</h3>
+                        <p data-en="Drag & Drop image here" data-id="Seret & Lepas gambar">Drag & Drop image here</p>
                     </div>
                     <div class="preview-container" id="preview-container">
                         <img src="" alt="Preview" id="preview-image">
                         <button class="remove-btn" id="remove-btn"><ion-icon name="close-circle"></ion-icon></button>
                     </div>
                 </div>
-
-                <div class="action-bar" id="action-bar">
-                    <button id="analyze-btn" class="cta-btn secondary-cta disabled">
-                        <span data-en="Analyze Now" data-id="Analisa Sekarang">Analyze Now</span>
-                        <div class="spinner" id="btn-spinner"></div>
-                    </button>
-                </div>
+                <div class="action-bar"><button id="analyze-btn" class="cta-btn secondary-cta disabled"><span data-en="Analyze Now" data-id="Analisa Sekarang">Analyze Now</span><div class="spinner" id="btn-spinner"></div></button></div>
             </div>
         </section>
 
-        <!-- Results Section -->
         <section id="results" class="results-section hidden">
             <div class="container">
                 <div class="result-header">
-                    <h2 data-en="Diagnosis Results" data-id="Hasil Diagnosa">Diagnosis Results</h2>
-                    <div class="badge green" data-en="Analysis Complete" data-id="Analisa Selesai">Analysis Complete</div>
+                    <h2 data-en="AI Analysis" data-id="Analisa AI">AI Analysis</h2>
+                    <div class="badge green">LIVE SUCCESS</div>
                 </div>
-                
                 <div class="result-grid">
-                    <!-- Main Card -->
                     <div class="result-card main-result">
-                        <div class="card-header">
-                            <ion-icon name="medical-outline" class="card-icon"></ion-icon>
-                            <h3 data-en="Condition Found" data-id="Penyakit Terdeteksi">Condition Found</h3>
-                        </div>
+                        <div class="card-header"><ion-icon name="medical-outline" class="card-icon"></ion-icon><h3 data-en="Result" data-id="Hasil">Result</h3></div>
                         <h2 id="diagnosis-name" class="diagnosis-highlight">---</h2>
-                        <div class="confidence-bar">
-                            <div class="bar-label">
-                                <span data-en="Confidence" data-id="Tingkat Keyakinan">Confidence</span>
-                                <span id="confidence-pct">0%</span>
-                            </div>
-                            <div class="bar-bg"><div class="bar-fill" id="confidence-fill"></div></div>
-                        </div>
+                        <div class="confidence-bar"><div class="bar-label"><span data-en="AI Confidence" data-id="Keyakinan AI">AI Confidence</span><span id="confidence-pct">0%</span></div><div class="bar-bg"><div class="bar-fill" id="confidence-fill"></div></div></div>
                     </div>
-
-                    <!-- Symptoms -->
-                    <div class="result-card">
-                        <div class="card-header">
-                            <ion-icon name="search-outline" class="card-icon"></ion-icon>
-                            <h3 data-en="Symptoms" data-id="Gejala">Symptoms</h3>
-                        </div>
-                        <ul id="symptoms-list" class="styled-list"></ul>
-                    </div>
-
-                    <!-- Solution -->
-                    <div class="result-card solution-card">
-                        <div class="card-header">
-                            <ion-icon name="checkmark-circle-outline" class="card-icon"></ion-icon>
-                            <h3 data-en="Recommended Treatment" data-id="Rekomendasi Penanganan">Recommended Treatment</h3>
-                        </div>
-                        <div id="solution-content" class="text-content"></div>
-                    </div>
-
-                    <!-- Prevention -->
-                    <div class="result-card prevention-card">
-                        <div class="card-header">
-                            <ion-icon name="shield-outline" class="card-icon"></ion-icon>
-                            <h3 data-en="Prevention" data-id="Pencegahan">Prevention</h3>
-                        </div>
-                        <div id="prevention-content" class="text-content"></div>
-                    </div>
-                </div>
-
-                <div class="disclaimer">
-                    <p data-en="* Disclaimer: This AI diagnosis is for advisory purposes only. Consult with agricultural experts for final confirmation." data-id="* Disclaimer: Diagnosa AI ini hanya untuk tujuan edukasi. Konsultasikan dengan ahli pertanian untuk konfirmasi akhir.">* Disclaimer: This AI diagnosis is for advisory purposes only. Consult with agricultural experts for final confirmation.</p>
+                    <div class="result-card"><div class="card-header"><ion-icon name="search-outline" class="card-icon"></ion-icon><h3 data-en="Symptoms" data-id="Gejala">Symptoms</h3></div><ul id="symptoms-list" class="styled-list"></ul></div>
+                    <div class="result-card"><div class="card-header"><ion-icon name="checkmark-circle-outline" class="card-icon"></ion-icon><h3 data-en="Solution" data-id="Solusi">Solution</h3></div><div id="solution-content" class="text-content"></div></div>
                 </div>
             </div>
         </section>
     </main>
 
-    <!-- Settings Modal -->
-    <div class="modal-overlay" id="settings-modal">
-        <div class="modal">
-            <div class="modal-header">
-                <h3 data-en="Settings" data-id="Pengaturan">Settings</h3>
-                <button class="close-modal" id="close-settings"><ion-icon name="close-outline"></ion-icon></button>
-            </div>
-            <div class="modal-body">
-                <div class="input-group">
-                    <label data-en="Gemini API Key" data-id="Gemini API Key">Gemini API Key</label>
-                    <input type="password" id="api-key-input" placeholder="Paste your API key here...">
-                    <p class="input-hint" data-en="Your key is stored locally and never sent to our servers." data-id="Key Anda disimpan secara lokal dan tidak dikirim ke server kami.">Your key is stored locally and never sent to our servers.</p>
-                </div>
-                <button class="cta-btn secondary-cta full-width" id="save-settings" data-en="Save Changes" data-id="Simpan Perubahan">Save Changes</button>
-            </div>
-        </div>
-    </div>
+    <div class="modal-overlay" id="settings-modal"><div class="modal"><div class="modal-header"><h3 data-en="Setup" data-id="Persiapan">Setup</h3><button class="close-modal" id="close-settings"><ion-icon name="close-outline"></ion-icon></button></div><div class="modal-body"><div class="input-group"><label>Gemini API Key</label><input type="password" id="api-key-input" placeholder="Paste key..."><p class="input-hint">Required to power the AI analysis.</p></div><button class="cta-btn secondary-cta" style="width:100%" id="save-settings">Save Key</button></div></div></div>
 
-    <footer class="footer">
-        <p>&copy; 2026 AgriGuard AI. Built for the future of AgriTech.</p>
-    </footer>
+    <footer><p>&copy; 2026 AgriGuard AI Portal. Portfolio Demo Project.</p></footer>
 
-    <script type="module" src="app.js"></script>
+    <!-- Logic System -->
+    <script type="importmap">
+        { "imports": { "@google/generative-ai": "https://esm.run/@google/generative-ai" } }
+    </script>
+    <script type="module">
+        import { GoogleGenerativeAI } from "@google/generative-ai";
+
+        let currentLang = 'en';
+        let apiKey = localStorage.getItem('demo_api_key') || '';
+        let selectedImage = null;
+
+        const ui = {
+            loader: document.getElementById('loader'),
+            langToggle: document.getElementById('lang-toggle'),
+            settings: document.getElementById('settings-modal'),
+            apiKey: document.getElementById('api-key-input'),
+            dropzone: document.getElementById('dropzone'),
+            analyze: document.getElementById('analyze-btn'),
+            results: document.getElementById('results')
+        };
+
+        window.onload = () => { setTimeout(() => { ui.loader.style.opacity = '0'; setTimeout(() => ui.loader.style.display = 'none', 500); }, 800); if(apiKey) ui.apiKey.value = apiKey; };
+
+        // Language
+        ui.langToggle.onclick = (e) => {
+            const item = e.target.closest('.lang-item');
+            if (!item) return;
+            currentLang = item.dataset.id ? 'id' : 'en'; // Simple toggle based on index or data
+            currentLang = item.dataset.lang;
+            document.querySelectorAll('.lang-item').forEach(el => el.classList.remove('active'));
+            item.classList.add('active');
+            document.querySelectorAll('[data-en]').forEach(el => el.textContent = el.getAttribute(`data-${currentLang}`));
+        };
+
+        document.getElementById('open-settings').onclick = () => ui.settings.style.display = 'flex';
+        document.getElementById('close-settings').onclick = () => ui.settings.style.display = 'none';
+        document.getElementById('save-settings').onclick = () => { apiKey = ui.apiKey.value.trim(); localStorage.setItem('demo_api_key', apiKey); ui.settings.style.display = 'none'; };
+
+        // File
+        const fileInput = document.getElementById('fileInput');
+        ui.dropzone.onclick = () => fileInput.click();
+        fileInput.onchange = (e) => handleFile(e.target.files[0]);
+        ui.dropzone.ondrop = (e) => { e.preventDefault(); handleFile(e.dataTransfer.files[0]); };
+        ui.dropzone.ondragover = (e) => e.preventDefault();
+
+        function handleFile(file) {
+            if (!file) return;
+            selectedImage = file;
+            const reader = new FileReader();
+            reader.onload = (e) => { 
+                document.getElementById('preview-image').src = e.target.result;
+                document.getElementById('preview-container').style.display = 'flex';
+                ui.analyze.classList.remove('disabled');
+            };
+            reader.readAsDataURL(file);
+        }
+
+        document.getElementById('remove-btn').onclick = (e) => { e.stopPropagation(); selectedImage = null; document.getElementById('preview-container').style.display = 'none'; ui.analyze.classList.add('disabled'); ui.results.classList.add('hidden'); };
+
+        // AI
+        ui.analyze.onclick = async () => {
+            if (!selectedImage || !apiKey) { ui.settings.style.display = 'flex'; return; }
+            try {
+                document.getElementById('btn-spinner').style.display = 'block';
+                const base64 = await new Promise(r => { const f = new FileReader(); f.onload = () => r(f.result.split(',')[1]); f.readAsDataURL(selectedImage); });
+                const genAI = new GoogleGenerativeAI(apiKey);
+                
+                // Fallback models optimized for different keys
+                const models = ["gemini-flash-latest", "gemini-1.5-flash", "gemini-2.0-flash"];
+                let responseText = "";
+                
+                for (let m of models) {
+                    try {
+                        const model = genAI.getGenerativeModel({ model: m });
+                        const res = await model.generateContent([
+                            "Analyze rice leaf disease. Return JSON: {name_en, name_id, confidence, symptoms_en:[], symptoms_id:[], solution_en, solution_id}",
+                            { inlineData: { data: base64, mimeType: selectedImage.type } }
+                        ]);
+                        responseText = await res.response.text();
+                        if (responseText) break;
+                    } catch (e) { console.warn(m + " failed"); }
+                }
+
+                const data = JSON.parse(responseText.match(/\{[\s\S]*\}/)[0]);
+                document.getElementById('diagnosis-name').textContent = currentLang == 'en' ? data.name_en : data.name_id;
+                document.getElementById('confidence-pct').textContent = data.confidence;
+                document.getElementById('confidence-fill').style.width = data.confidence;
+                ui.results.classList.remove('hidden');
+                ui.results.scrollIntoView({ behavior: 'smooth' });
+            } catch (err) { alert("Error: " + err.message); }
+            finally { document.getElementById('btn-spinner').style.display = 'none'; }
+        };
+    </script>
 </body>
 </html>
