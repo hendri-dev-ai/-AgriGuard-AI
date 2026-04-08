@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgriGuard AI - Rice Disease Detection</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+    <!-- Ionicons -->
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="loader" class="loader-wrapper">
+        <div class="leaf-loader">
+            <ion-icon name="leaf" class="loader-icon"></ion-icon>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <div class="logo">
+            <ion-icon name="shield-checkmark-outline" class="logo-icon"></ion-icon>
+            <span class="logo-text">AgriGuard <span class="accent">AI</span></span>
+        </div>
+        <nav>
+            <div class="lang-switcher" id="lang-toggle">
+                <span class="lang-item active" data-lang="en">EN</span>
+                <span class="lang-divider">|</span>
+                <span class="lang-item" data-lang="id">ID</span>
+            </div>
+            <button class="settings-btn" id="open-settings">
+                <ion-icon name="settings-outline"></ion-icon>
+            </button>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-overlay"></div>
+            <div class="hero-content">
+                <h1 id="hero-title" data-en="Protect Your Harvest with AI" data-id="Lindungi Panen Anda dengan AI">Protect Your Harvest with AI</h1>
+                <p id="hero-subtitle" data-en="Instant rice crop disease detection to ensure food security and maximize yield." data-id="Deteksi dini penyakit padi untuk ketahanan pangan dan hasil panen maksimal.">Instant rice crop disease detection to ensure food security and maximize yield.</p>
+                <a href="#scanner" class="cta-btn main-cta" data-en="Start Scanning" data-id="Mulai Scan">Start Scanning</a>
+            </div>
+        </section>
+
+        <!-- Scanner Section -->
+        <section id="scanner" class="scanner-section">
+            <div class="container">
+                <div class="uploader-container" id="dropzone">
+                    <input type="file" id="fileInput" accept="image/*" hidden>
+                    <div class="uploader-content">
+                        <div class="icon-pulse">
+                            <ion-icon name="cloud-upload-outline" class="upload-icon"></ion-icon>
+                        </div>
+                        <h3 data-en="Upload Rice Leaf Photo" data-id="Unggah Foto Daun Padi">Upload Rice Leaf Photo</h3>
+                        <p data-en="Drop your image here or click to browse" data-id="Seret gambar ke sini atau klik untuk memilih">Drop your image here or click to browse</p>
+                        <span class="file-info" data-en="Supports: JPG, PNG, WEBP" data-id="Format: JPG, PNG, WEBP">Supports: JPG, PNG, WEBP</span>
+                    </div>
+                    <div class="preview-container" id="preview-container">
+                        <img src="" alt="Preview" id="preview-image">
+                        <button class="remove-btn" id="remove-btn"><ion-icon name="close-circle"></ion-icon></button>
+                    </div>
+                </div>
+
+                <div class="action-bar" id="action-bar">
+                    <button id="analyze-btn" class="cta-btn secondary-cta disabled">
+                        <span data-en="Analyze Now" data-id="Analisa Sekarang">Analyze Now</span>
+                        <div class="spinner" id="btn-spinner"></div>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Results Section -->
+        <section id="results" class="results-section hidden">
+            <div class="container">
+                <div class="result-header">
+                    <h2 data-en="Diagnosis Results" data-id="Hasil Diagnosa">Diagnosis Results</h2>
+                    <div class="badge green" data-en="Analysis Complete" data-id="Analisa Selesai">Analysis Complete</div>
+                </div>
+                
+                <div class="result-grid">
+                    <!-- Main Card -->
+                    <div class="result-card main-result">
+                        <div class="card-header">
+                            <ion-icon name="medical-outline" class="card-icon"></ion-icon>
+                            <h3 data-en="Condition Found" data-id="Penyakit Terdeteksi">Condition Found</h3>
+                        </div>
+                        <h2 id="diagnosis-name" class="diagnosis-highlight">---</h2>
+                        <div class="confidence-bar">
+                            <div class="bar-label">
+                                <span data-en="Confidence" data-id="Tingkat Keyakinan">Confidence</span>
+                                <span id="confidence-pct">0%</span>
+                            </div>
+                            <div class="bar-bg"><div class="bar-fill" id="confidence-fill"></div></div>
+                        </div>
+                    </div>
+
+                    <!-- Symptoms -->
+                    <div class="result-card">
+                        <div class="card-header">
+                            <ion-icon name="search-outline" class="card-icon"></ion-icon>
+                            <h3 data-en="Symptoms" data-id="Gejala">Symptoms</h3>
+                        </div>
+                        <ul id="symptoms-list" class="styled-list"></ul>
+                    </div>
+
+                    <!-- Solution -->
+                    <div class="result-card solution-card">
+                        <div class="card-header">
+                            <ion-icon name="checkmark-circle-outline" class="card-icon"></ion-icon>
+                            <h3 data-en="Recommended Treatment" data-id="Rekomendasi Penanganan">Recommended Treatment</h3>
+                        </div>
+                        <div id="solution-content" class="text-content"></div>
+                    </div>
+
+                    <!-- Prevention -->
+                    <div class="result-card prevention-card">
+                        <div class="card-header">
+                            <ion-icon name="shield-outline" class="card-icon"></ion-icon>
+                            <h3 data-en="Prevention" data-id="Pencegahan">Prevention</h3>
+                        </div>
+                        <div id="prevention-content" class="text-content"></div>
+                    </div>
+                </div>
+
+                <div class="disclaimer">
+                    <p data-en="* Disclaimer: This AI diagnosis is for advisory purposes only. Consult with agricultural experts for final confirmation." data-id="* Disclaimer: Diagnosa AI ini hanya untuk tujuan edukasi. Konsultasikan dengan ahli pertanian untuk konfirmasi akhir.">* Disclaimer: This AI diagnosis is for advisory purposes only. Consult with agricultural experts for final confirmation.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Settings Modal -->
+    <div class="modal-overlay" id="settings-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 data-en="Settings" data-id="Pengaturan">Settings</h3>
+                <button class="close-modal" id="close-settings"><ion-icon name="close-outline"></ion-icon></button>
+            </div>
+            <div class="modal-body">
+                <div class="input-group">
+                    <label data-en="Gemini API Key" data-id="Gemini API Key">Gemini API Key</label>
+                    <input type="password" id="api-key-input" placeholder="Paste your API key here...">
+                    <p class="input-hint" data-en="Your key is stored locally and never sent to our servers." data-id="Key Anda disimpan secara lokal dan tidak dikirim ke server kami.">Your key is stored locally and never sent to our servers.</p>
+                </div>
+                <button class="cta-btn secondary-cta full-width" id="save-settings" data-en="Save Changes" data-id="Simpan Perubahan">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2026 AgriGuard AI. Built for the future of AgriTech.</p>
+    </footer>
+
+    <script type="module" src="app.js"></script>
+</body>
+</html>
